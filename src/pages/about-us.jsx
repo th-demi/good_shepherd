@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import "../app/globals.css";
-import ImageCarousel from "./ImageCarousel";
 
-export default function ExamPage() {
-  const [isCarouselVisible, setIsCarouselVisible] = useState(false);
+export default function AboutUsPage() {
+  const [isLogoVisible, setIsLogoVisible] = useState(false);
   const [isContentVisible, setIsContentVisible] = useState(false);
 
-  // Trigger visibility of the carousel after 400ms
+  // Trigger visibility of the logo after 250ms
   useEffect(() => {
-    const carouselTimer = setTimeout(() => {
-      setIsCarouselVisible(true);
-    }, 400); // 400ms for the carousel to appear
+    const logoTimer = setTimeout(() => {
+      setIsLogoVisible(true);
+    }, 400); // 250ms for the logo to appear
 
     // Trigger visibility of the content after 500ms
     const contentTimer = setTimeout(() => {
@@ -19,7 +18,7 @@ export default function ExamPage() {
 
     // Cleanup the timeouts if the component unmounts
     return () => {
-      clearTimeout(carouselTimer);
+      clearTimeout(logoTimer);
       clearTimeout(contentTimer);
     };
   }, []);
@@ -30,9 +29,7 @@ export default function ExamPage() {
         {/* Mobile/Tablet Header Section */}
         <div className="lg:hidden mb-8">
           <div className="md:ml-[8.33%] md:w-1/2">
-            <h2 className="text-4xl md:text-5xl font-thin mb-6">
-              INTERNATIONAL EXAM BOARDS
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-thin mb-6">ABOUT US</h2>
           </div>
           <div className="hidden md:block md:ml-[8.33%] md:w-[83.33%]">
             <hr className="border-t border-white/20" />
@@ -41,18 +38,20 @@ export default function ExamPage() {
 
         {/* Main Content */}
         <div className="flex flex-wrap -mx-4">
-          {/* Image Section (Carousel) */}
+          {/* Image Section - Logo */}
           <div className="w-full px-4 mb-8 md:mb-0 md:w-[41.66%] md:ml-[8.33%] lg:ml-0">
-            <div
-              className={`h-[300px] md:h-[400px] bg-gray-900 rounded-lg overflow-hidden transition-opacity duration-700 ${
-                isCarouselVisible ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              <ImageCarousel />
+            <div className="h-[300px] md:h-[400px] bg-transparent rounded-lg overflow-hidden">
+              <img
+                src="/GSIM_only_logo.png"
+                alt="GSIM Logo"
+                className={`w-full h-full object-contain transition-opacity duration-700 ${
+                  isLogoVisible ? "opacity-100" : "opacity-0"
+                }`}
+              />
             </div>
           </div>
 
-          {/* Text Content */}
+          {/* Text Content Section */}
           <div
             className={`w-full px-4 md:w-[41.66%] md:ml-[8.33%] lg:ml-[16.66%] transition-opacity duration-700 ${
               isContentVisible ? "opacity-100" : "opacity-0"
@@ -60,21 +59,25 @@ export default function ExamPage() {
           >
             {/* Desktop Header */}
             <h2 className="hidden lg:block text-5xl xl:text-7xl font-thin mb-12">
-              INTERNATIONAL EXAM BOARDS
+              ABOUT US
             </h2>
 
             {/* Content for all screen sizes */}
             <div className="space-y-4">
               <p className="text-lg text-gray-300">
-                We offer music exams from leading international boards: <strong>ABRSM</strong>, <strong>Trinity</strong>, <strong>LCM</strong>, <strong>MTB</strong>, and <strong>RSL</strong>.
+                We are a dedicated music academy committed to nurturing talent and providing world-class music education.
               </p>
 
               <p className="text-lg text-gray-300">
-                Our syllabus follows the official guidelines of these boards, ensuring top-quality preparation for all levels.
+                Our team consists of experienced instructors, all passionate about helping students achieve their musical goals.
               </p>
 
               <p className="text-lg text-gray-300">
-                Students receive globally recognized certifications upon passing their exams, providing them with valuable qualifications for their music career.
+                With partnerships with globally recognized exam boards like <strong>ABRSM</strong>, <strong>Trinity</strong>, <strong>LCM</strong>, <strong>MTB</strong>, and <strong>RSL</strong>, we ensure our students receive the best possible preparation and certifications.
+              </p>
+
+              <p className="text-lg text-gray-300">
+                Whether you're a beginner or an advanced student, our curriculum and expert guidance provide the skills needed for success in music and beyond.
               </p>
             </div>
           </div>
