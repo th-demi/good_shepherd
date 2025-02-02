@@ -10,6 +10,7 @@ import TeachersandtutorsBlock from "./components/TeachersandtutorsBlock";
 import AdmissionsDetails from "./components/AdmissionDetails";
 import FooterTop from "./components/FooterTop";
 import FooterBottom from "./components/FooterBottom";
+import ScrollUpButton from "./components/ScrollUpButton";
 export default function Home() {
   return (
     <div>
@@ -23,19 +24,25 @@ export default function Home() {
         <RecitalBlock />
         <ExamsBlock />
         <TeachersandtutorsBlock />
+        {/* <ReviewsBlock /> */}
         <AdmissionsBlock />
         {/*<FutureOfMusicBlock />*/}
         {/* <AdmissionsDetails /> */}
+      </main>
+      <ScrollUpButton />
+      <footer>
         <FooterTop />
         <FooterBottom />
-      </main>
-      <footer>
-
       </footer>
     </div>
-    // Audition to admission
-    //
-    // scholarships to International exam boards (scroll logos of 4 schools, anchor to new page for details) registered exam centres of RSL and MTB(highlighted)
-    // Artisitic excellence - genral tutors info
+    // Main logo in the header
+    // Add tooltip to navigation icons
+    // Reduce the size of gradient in the navigation
+    // Add About us, Exams, Admission in the navigation menu
+    // No Repeated persons in photos/videos
+    // Add Review block (google review)
+    // Add Image slider under exam block
+    // Add a section like Admission details block under exam boards
+
   );
 }

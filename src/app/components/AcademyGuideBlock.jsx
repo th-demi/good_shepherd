@@ -24,8 +24,8 @@ export default function AcademyGuideBlock() {
   }, []);
 
   return (
-    <div className="bg-black text-white py-12 h-screen">
-      <div className="container mx-auto px-4">
+    <div className="bg-black text-white py-12 min-h-screen">
+      <div className="container mx-auto px-4 flex flex-col justify-center">
         {/* Mobile/Tablet Header Section */}
         <div className="lg:hidden">
           <div className="md:ml-[8.33%] md:w-1/2">
@@ -46,7 +46,7 @@ export default function AcademyGuideBlock() {
         {/* Main Content */}
         <div className="flex flex-wrap">
           {/* Image Section */}
-          <div className="md:w-[41.66%] md:ml-[8.33%] lg:ml-0">
+          <div className="md:w-[41.66%] md:ml-[8.33%] lg:ml-0 mb-6 sm:mb-8">
             <div 
               data-intersect="once"
               className={`transform transition-opacity duration-500 ${
@@ -56,7 +56,7 @@ export default function AcademyGuideBlock() {
               <img
                 src="/kid_piano.JPG"
                 alt="A montage of images depicting students playing instruments on the Academy rooftop"
-                className="w-full h-auto"
+                className="w-full h-auto object-cover"
               />
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function AcademyGuideBlock() {
               <div className="hidden md:block">
                 <div className="pr-2 lg:pr-24">
                   <p className="mb-4">
-                  Discover all you need to know about our community, including academic programs, admission requirements, and how you can become a part of it.
+                    Discover all you need to know about our community, including academic programs, admission requirements, and how you can become a part of it.
                   </p>
                 </div>
                 <div>
@@ -125,7 +125,7 @@ export default function AcademyGuideBlock() {
           >
             <div className="pr-2 lg:pr-24">
               <p className="mb-4">
-              Discover all you need to know about our community, including academic programs, admission requirements, and how you can become a part of it.
+                Discover all you need to know about our community, including academic programs, admission requirements, and how you can become a part of it.
               </p>
             </div>
             <div>

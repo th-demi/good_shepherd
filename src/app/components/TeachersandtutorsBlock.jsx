@@ -83,7 +83,7 @@ export default function TeachersandtutorsBlock() {
           </div>
 
           {/* Image Section */}
-          <div className="md:w-1/2 lg:w-[41.66%]">
+          <div className="md:w-1/2 lg:w-[41.66%] ">
             <div 
               data-intersect="once"
               className={`px-0 lg:px-3 transform transition-opacity duration-500 ${
@@ -112,31 +112,6 @@ export default function TeachersandtutorsBlock() {
                 Experienced tutors share their knowledge and insights, creating a space where students can learn, explore, and grow at their own pace, guided by genuine support and understanding.
               </p>
             </div>
-            {/* <div>
-              <ul>
-                <li>
-                  <a 
-                    href="/study/artistic-excellence"
-                    className="group inline-flex items-center text-black hover:text-white transition-colors relative"
-                  >
-                    <span className="mr-2 text-white">Artistic Excellence and Opportunities</span>
-                    <div className="transform transition-transform group-hover:translate-x-1">
-                      <svg viewBox="0 0 18 18" className="w-4 h-4 text-custom-red">
-                        <polygon 
-                          fillRule="evenodd" 
-                          fill="currentcolor" 
-                          stroke="currentcolor" 
-                          strokeWidth=".5" 
-                          points="0 .682 6.635 3.999 0 7.317 0 8 8 3.999 0 0" 
-                          transform="translate(5 5)"
-                        />
-                      </svg>
-                    </div>
-                    <span className="absolute bottom-0 left-0 w-0 h-0.25 bg-custom-red transition-all duration-300 group-hover:w-full"></span>
-                  </a>
-                </li>
-              </ul>
-            </div> */}
           </div>
         </div>
       </div>

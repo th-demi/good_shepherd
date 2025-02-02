@@ -70,6 +70,16 @@ const ExamsBlock = () => {
                     <ChevronIcon />
                   </Link>
                 </li>
+                <li>
+                  <Link href="/results" className="group flex items-center text-white hover:text-white">
+                    <div className="relative inline-block">
+                      <span className="mr-2">Check out Exam Results</span>
+                      {/* Underline effect */}
+                      <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </div>
+                    <ChevronIcon />
+                  </Link>
+                </li>
               </ul>
               </div>
             </div>
@@ -88,6 +98,16 @@ const ExamsBlock = () => {
             <Link href="/exams" className="group flex items-center text-white hover:text-white">
               <div className="relative inline-block">
                 <span className="mr-2">Learn About Our Exam Partnerships</span>
+                {/* Underline effect */}
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+              </div>
+              <ChevronIcon />
+            </Link>
+          </li>
+          <li>
+            <Link href="/results" className="group flex items-center text-white hover:text-white">
+              <div className="relative inline-block">
+                <span className="mr-2">Check out Exam Results</span>
                 {/* Underline effect */}
                 <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
               </div>

@@ -1,8 +1,6 @@
 "use client";
-import { Music } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import MusicRegistrationForm from './MusicRegistrationForm';
-import AdmissionsDetails from './AdmissionDetails';
 
 export default function AdmissionsBlock() {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,8 +28,8 @@ export default function AdmissionsBlock() {
     <div className="bg-white py-16">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column (Heading + Form) */}
-          <div className="w-full lg:w-1/2 order-2 lg:order-1">
+          {/* Left Column (Title + Form) */}
+          <div className="w-full lg:w-1/2 order-1 lg:order-1">
             {/* Heading - Always visible, responsive size */}
             <h2 
               data-intersect="once"
@@ -41,7 +39,7 @@ export default function AdmissionsBlock() {
             >
               ADMISSIONS
             </h2>
-            
+
             {/* Form */}
             <div 
               data-intersect="once"
@@ -54,7 +52,7 @@ export default function AdmissionsBlock() {
           </div>
 
           {/* Right Column (Image) */}
-          <div className="w-full lg:w-1/2 order-1 lg:order-2">
+          <div className="w-full lg:w-1/2 order-2 lg:order-2">
             <div 
               data-intersect="once"
               className={`transform transition-opacity duration-500 ${
