@@ -1,8 +1,11 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import MusicRegistrationForm from './MusicRegistrationForm';
+import AdmissionsDetails from './AdmissionDetails';
+import { AuthContext } from './MainNavigation';
 
 export default function AdmissionsBlock() {
+  const { isLoggedIn } = useContext(AuthContext);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -28,10 +31,10 @@ export default function AdmissionsBlock() {
     <div className="bg-white py-16">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column (Title + Form) */}
+          {/* Left Column (Title + Form/Details) */}
           <div className="w-full lg:w-1/2 order-1 lg:order-1">
             {/* Heading - Always visible, responsive size */}
-            <h2 
+            <h2
               data-intersect="once"
               className={`text-4xl md:text-5xl lg:text-7xl text-custom-red font-thin mb-6 transform transition-transform duration-500 ${
                 isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
@@ -40,20 +43,20 @@ export default function AdmissionsBlock() {
               ADMISSIONS
             </h2>
 
-            {/* Form */}
-            <div 
+            {/* Form or AdmissionsDetails */}
+            <div
               data-intersect="once"
               className={`transform transition-transform duration-500 ${
                 isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
               }`}
             >
-              <MusicRegistrationForm />
+              {isLoggedIn ? <AdmissionsDetails /> : <MusicRegistrationForm />}
             </div>
           </div>
 
           {/* Right Column (Image) */}
           <div className="w-full lg:w-1/2 order-2 lg:order-2">
-            <div 
+            <div
               data-intersect="once"
               className={`transform transition-opacity duration-500 ${
                 isVisible ? 'opacity-100' : 'opacity-0'

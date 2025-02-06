@@ -8,7 +8,6 @@ const AdmissionsDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch admissions data from MongoDB API
   useEffect(() => {
     const fetchAdmissions = async () => {
       try {
@@ -30,20 +29,19 @@ const AdmissionsDetails = () => {
     fetchAdmissions();
   }, []);
 
-  // Format date function
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return format(date, 'MMM dd, yyyy');
   };
 
   return (
-    <div className="flex h-[calc(100vh-6rem)] bg-gray-50">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-12rem)] bg-gray-50 rounded-lg overflow-hidden">
       {/* Left Column - Names List */}
-      <div className="w-80 border-r border-gray-200 bg-white overflow-y-auto">
+      <div className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-gray-200 bg-white">
         <div className="sticky top-0 bg-white z-10 p-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-800">Admissions</h2>
         </div>
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-gray-100 max-h-[calc(100vh-16rem)] overflow-y-auto">
           {loading && (
             <div className="text-center py-4">Loading admissions...</div>
           )}
@@ -58,9 +56,7 @@ const AdmissionsDetails = () => {
               key={student._id}
               onClick={() => setSelectedStudent(student)}
               className={`w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors duration-150 ${
-                selectedStudent?._id === student._id
-                  ? 'bg-gray-100' // Only background color for selected student
-                  : ''
+                selectedStudent?._id === student._id ? 'bg-gray-100' : ''
               }`}
             >
               <div className="min-w-0 flex-1">
@@ -79,9 +75,9 @@ const AdmissionsDetails = () => {
       {/* Right Column - Details View */}
       <div className="flex-1 overflow-y-auto bg-white">
         {selectedStudent ? (
-          <div className="p-6">
+          <div className="p-4 sm:p-6 max-h-[calc(100vh-16rem)] overflow-y-auto">
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                 {selectedStudent.Name}
               </h1>
               <p className="text-sm text-gray-500">
@@ -89,7 +85,7 @@ const AdmissionsDetails = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <div className="space-y-4">
                 <DetailItem
                   label="Activity Status"
@@ -141,7 +137,6 @@ const AdmissionsDetails = () => {
   );
 };
 
-// Helper component for displaying details
 const DetailItem = ({ label, value, type }) => {
   const renderValue = () => {
     if (type === 'email') {
@@ -164,7 +159,7 @@ const DetailItem = ({ label, value, type }) => {
   return (
     <div className="bg-gray-50 p-4 rounded-lg">
       <dt className="text-sm font-medium text-gray-500">{label}</dt>
-      <dd className="mt-1 text-sm text-gray-900">{renderValue()}</dd>
+      <dd className="mt-1 text-sm text-gray-900 break-words">{renderValue()}</dd>
     </div>
   );
 };

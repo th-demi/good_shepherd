@@ -1,4 +1,5 @@
 // pages/index.js
+import { AuthProvider } from "./components/MainNavigation";
 import Header from "./components/Header";
 import MainNavigation from "./components/MainNavigation";
 import IntroKeylineBlock from "./components/IntroKeylineBlock";
@@ -13,36 +14,34 @@ import FooterBottom from "./components/FooterBottom";
 import ScrollUpButton from "./components/ScrollUpButton";
 export default function Home() {
   return (
-    <div>
-      <div className="relative z-9999">
-        <MainNavigation />
-        <Header />
-      </div>
-      <main className="box-border">
-        <IntroKeylineBlock />
-        <AcademyGuideBlock />
-        <RecitalBlock />
-        <ExamsBlock />
-        <TeachersandtutorsBlock />
-        {/* <ReviewsBlock /> */}
-        <AdmissionsBlock />
-        {/*<FutureOfMusicBlock />*/}
-        {/* <AdmissionsDetails /> */}
-      </main>
-      <ScrollUpButton />
-      <footer>
-        <FooterTop />
-        <FooterBottom />
-      </footer>
+    <AuthProvider>
+      <div>
+        <div className="relative z-9999">
+          <MainNavigation />
+          <Header />
+        </div>
+        <main className="box-border">
+          <IntroKeylineBlock />
+          <AcademyGuideBlock />
+          <RecitalBlock />
+          <ExamsBlock />
+          <TeachersandtutorsBlock />
+          {/* <ReviewsBlock /> */}
+          <AdmissionsBlock />
+          {/*<FutureOfMusicBlock />*/}
+          {/* <AdmissionsDetails /> */}
+        </main>
+        <ScrollUpButton />
+        <footer>
+          <FooterTop />
+          <FooterBottom />
+        </footer>
     </div>
-    // Main logo in the header
+    </AuthProvider>
     // Add tooltip to navigation icons
-    // Reduce the size of gradient in the navigation
     // Add About us, Exams, Admission in the navigation menu
     // No Repeated persons in photos/videos
     // Add Review block (google review)
-    // Add Image slider under exam block
-    // Add a section like Admission details block under exam boards
 
   );
 }

@@ -1,5 +1,8 @@
+"use client";
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+import ExamSlider from './ExamSlider';
 
 const ChevronIcon = () => (
   <svg viewBox="0 0 18 18" className="w-4 h-4 text-white">
@@ -15,6 +18,22 @@ const ChevronIcon = () => (
 );
 
 const ExamsBlock = () => {
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [isSliderOpen, setIsSliderOpen] = useState(false);
+  const handleOpenSlider = (e) => {
+    e.preventDefault();
+    setIsSliderOpen(true);
+    // Prevent body scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+  };
+
+  // Handle closing the slider
+  const handleCloseSlider = () => {
+    setIsSliderOpen(false);
+    // Restore body scrolling
+    document.body.style.overflow = 'unset';
+  };
   return (
     <section className="bg-custom-red py-12">
       <div className="container mx-auto px-4">
@@ -80,6 +99,30 @@ const ExamsBlock = () => {
                     <ChevronIcon />
                   </Link>
                 </li>
+                <li>
+                  <button
+                    onClick={handleOpenSlider}
+                    className="group inline-flex items-center text-white hover:text-white transition-colors relative"
+                  >
+                    <div className="relative inline-block">
+                      <span className="mr-2">See our Examination gallery</span>
+                      {/* Underline effect */}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.25 bg-white transition-all duration-300 group-hover:w-full inline-block"></span>
+                    </div>
+                    <div className="transform transition-transform group-hover:translate-x-1">
+                      <svg viewBox="0 0 18 18" className="w-4 h-4 text-white group-hover:hidden">
+                        <polygon
+                          fillRule="evenodd"
+                          fill="currentColor"
+                          stroke="currentColor"
+                          strokeWidth=".5"
+                          points="0 .682 6.635 3.999 0 7.317 0 8 8 3.999 0 0"
+                          transform="translate(5 5)"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </li>
               </ul>
               </div>
             </div>
@@ -114,8 +157,46 @@ const ExamsBlock = () => {
               <ChevronIcon />
             </Link>
           </li>
+          <li>
+            <button
+              onClick={handleOpenSlider}
+              className="group inline-flex items-center text-white hover:text-white transition-colors relative"
+            >
+              <div className="relative inline-block">
+                <span className="mr-2">SEE OUR RECITAL EVENTS</span>
+                {/* Underline effect */}
+                <span className="absolute bottom-0 left-0 w-0 h-0.25 bg-custom-red transition-all duration-300 group-hover:w-full inline-block"></span>
+              </div>
+              <div className="transform transition-transform group-hover:translate-x-1">
+                <svg viewBox="0 0 18 18" className="w-4 h-4 text-white group-hover:hidden">
+                  <polygon
+                    fillRule="evenodd"
+                    fill="currentColor"
+                    stroke="currentColor"
+                    strokeWidth=".5"
+                    points="0 .682 6.635 3.999 0 7.317 0 8 8 3.999 0 0"
+                    transform="translate(5 5)"
+                  />
+                </svg>
+              </div>
+            </button>
+          </li>
         </ul>
         </div>
+        {isSliderOpen && (
+          <div className="fixed inset-0 z-50">
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={handleCloseSlider}
+            ></div>
+            
+            {/* Modal Content */}
+            <div className="relative z-10 w-full h-full">
+              <ExamSlider onClose={handleCloseSlider} />
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,13 +1,26 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Create auth context
+export const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
 const Navigation = () => {
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [showElements, setShowElements] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
@@ -29,7 +42,7 @@ const Navigation = () => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 800));
 
-    if (loginData.email === 'gsim' && loginData.password === '5550') {
+    if (loginData.email === 'gsim@gmail.com' && loginData.password === '5550') {
       setIsLoggedIn(true);
       setShowLoginForm(false);
       setLoginData({ email: '', password: '' });
@@ -71,7 +84,7 @@ const Navigation = () => {
             <div className={`nav-login relative transition-all duration-500 ${showElements ? 'opacity-100 translate-x-0 delay-300' : 'opacity-0 translate-x-[20px]'}`}>
               <button
                 onClick={() => isLoggedIn ? handleLogout() : setShowLoginForm(!showLoginForm)}
-                className="p-2 text-white hover:text-gray-200 transition-colors duration-200 group relative"
+                className="p-2 text-white bg-transparent hover:text-gray-200 transition-colors duration-200 group relative"
               >
                 <svg 
                   width="16" 

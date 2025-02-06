@@ -1,92 +1,130 @@
 import { useState, useEffect } from "react";
-import Head from "next/head"; // Import Head from next/head
+import Head from "next/head";
+import Image from "next/image";
 import "../app/globals.css";
 
 export default function AboutUsPage() {
-  const [isLogoVisible, setIsLogoVisible] = useState(false);
-  const [isContentVisible, setIsContentVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState('about');
+  const [isVisible, setIsVisible] = useState(false);
 
-  // Trigger visibility of the logo after 250ms
   useEffect(() => {
-    const logoTimer = setTimeout(() => {
-      setIsLogoVisible(true);
-    }, 400); // 250ms for the logo to appear
-
-    // Trigger visibility of the content after 500ms
-    const contentTimer = setTimeout(() => {
-      setIsContentVisible(true);
-    }, 500); // 500ms for the content to appear
-
-    // Cleanup the timeouts if the component unmounts
-    return () => {
-      clearTimeout(logoTimer);
-      clearTimeout(contentTimer);
-    };
+    setIsVisible(true);
   }, []);
 
   return (
     <>
-      {/* Set the title for this page */}
       <Head>
         <title>About Us - GSIM</title>
         <meta name="description" content="Learn more about GSIM - Good Shepherd Institute Of Music" />
       </Head>
 
-      <div className="bg-black text-white py-12 min-h-screen">
-        <div className="container mx-auto px-4">
-          {/* Mobile/Tablet Header Section */}
-          <div className="lg:hidden mb-8">
-            <div className="md:ml-[8.33%] md:w-1/2">
-              <h2 className="text-4xl md:text-5xl font-thin mb-6">ABOUT US</h2>
+      <div className="bg-black text-white min-h-screen">
+        <div className="container mx-auto px-4 py-12">
+          {/* Hero Section */}
+          <div className="flex flex-col items-center justify-center mb-16">
+            <div className="relative w-32 h-32 mb-8 transform transition-all duration-1000 hover:scale-110">
+              <Image
+                src="/GSIM_only_logo.png"
+                alt="GSIM Logo"
+                fill
+                className={`object-contain transition-opacity duration-1000 ${
+                  isVisible ? "opacity-100" : "opacity-0"
+                }`}
+              />
             </div>
-            <div className="hidden md:block md:ml-[8.33%] md:w-[83.33%]">
-              <hr className="border-t border-white/20" />
-            </div>
+            <h1 className="text-5xl md:text-7xl font-thin text-center mb-6 
+              bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent
+              transform transition-all duration-1000 hover:scale-105">
+              ABOUT GSIM
+            </h1>
           </div>
 
-          {/* Main Content */}
-          <div className="flex flex-wrap -mx-4">
-            {/* Image Section - Logo */}
-            <div className="w-full px-4 mb-8 md:mb-0 md:w-[41.66%] md:ml-[8.33%] lg:ml-0">
-              <div className="h-[300px] md:h-[400px] bg-transparent rounded-lg overflow-hidden">
-                <img
-                  src="/GSIM_only_logo.png"
-                  alt="GSIM Logo"
-                  className={`w-full h-full object-contain transition-opacity duration-700 ${
-                    isLogoVisible ? "opacity-100" : "opacity-0"
-                  }`}
-                />
+          {/* Navigation Tabs */}
+          <div className="flex justify-center gap-4 mb-12">
+            {['about', 'vision'].map((section) => (
+              <button
+                key={section}
+                onClick={() => setActiveSection(section)}
+                className={`px-8 py-3 text-lg rounded-full transition-all duration-500 transform
+                  ${activeSection === section 
+                    ? 'bg-white text-black scale-105 shadow-lg'
+                    : 'bg-white/10 hover:bg-white/20'}`}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          {/* Content Sections */}
+          <div className="max-w-4xl mx-auto">
+            {activeSection === 'about' && (
+              <div className="space-y-8 animate-slideUp">
+                <p className="text-xl text-gray-300 leading-relaxed transform transition-all duration-500 hover:translate-x-2">
+                  Welcome to Good Shepherd Music Institute (GSIM), one of Chennai's most respected music institutions! For over 5 years, GSIM has been dedicated to spreading the joy of music, nurturing talent, and cultivating excellence in students of all ages.
+                </p>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  {[
+                    "A generation ago, becoming a successful musician required a good ear, solid technique, sensitivity, and a strong work ethic. While these qualities are still vital, today's young musicians must bring even more to the table.",
+                    "Whether you're an advanced student preparing for a career in music or a parent introducing your child to music for the first time, GSIM has something special for you.",
+                    "As society evolves, so do its expectations of artists. Collaboration is now the key. Musicians can no longer simply exist in the world—they must actively engage with it.",
+                    "We invite you to explore the many opportunities an education at GSIM offers. We hope you find success in your musical journey with us."
+                  ].map((text, index) => (
+                    <div 
+                      key={index}
+                      className="bg-white/5 p-6 rounded-xl backdrop-blur-sm
+                        transform transition-all duration-500 hover:scale-105 hover:bg-white/10"
+                    >
+                      <p className="text-gray-300">{text}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Text Content Section */}
-            <div
-              className={`w-full px-4 md:w-[41.66%] md:ml-[8.33%] lg:ml-[16.66%] transition-opacity duration-700 ${
-                isContentVisible ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              {/* Desktop Header */}
-              <h2 className="hidden lg:block text-5xl xl:text-7xl font-thin mb-12">ABOUT US</h2>
+            {activeSection === 'vision' && (
+              <div className="space-y-8 animate-slideUp">
+                <div className="bg-gradient-to-br from-white/10 to-transparent p-8 rounded-xl mb-12
+                  transform transition-all duration-500 hover:translate-y-[-4px]">
+                  <h3 className="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                    Our Vision
+                  </h3>
+                  <p className="text-xl text-gray-300">
+                    To inspire individuals to think musically and make a difference in the world.
+                  </p>
+                </div>
 
-              {/* Content for all screen sizes */}
-              <div className="space-y-4">
-                <p className="text-lg text-gray-300">
-                  We are a dedicated music academy committed to nurturing talent and providing world-class music education.
-                </p>
-
-                <p className="text-lg text-gray-300">
-                  Our team consists of experienced instructors, all passionate about helping students achieve their musical goals.
-                </p>
-
-                <p className="text-lg text-gray-300">
-                  With partnerships with globally recognized exam boards like <strong>ABRSM</strong>, <strong>Trinity</strong>, <strong>LCM</strong>, <strong>MTB</strong>, and <strong>RSL</strong>, we ensure our students receive the best possible preparation and certifications.
-                </p>
-
-                <p className="text-lg text-gray-300">
-                  Whether you're a beginner or an advanced student, our curriculum and expert guidance provide the skills needed for success in music and beyond.
-                </p>
+                <div className="grid md:grid-cols-2 gap-8">
+                  {[
+                    {
+                      title: "Excellence",
+                      content: "We cultivate greatness by offering rigorous education and holding students to the highest standards of excellence."
+                    },
+                    {
+                      title: "Innovation",
+                      content: "We challenge our students to not only follow established paths but to lead the way, creating new opportunities."
+                    },
+                    {
+                      title: "Community",
+                      content: "Our diverse community allows different perspectives to expand minds and enrich experiences."
+                    },
+                    {
+                      title: "Impact",
+                      content: "We mold students into extraordinary musicians and people who create positive change through their music."
+                    }
+                  ].map((item, index) => (
+                    <div 
+                      key={index}
+                      className="bg-white/5 p-6 rounded-xl backdrop-blur-sm
+                        transform transition-all duration-500 hover:scale-105 hover:bg-white/10"
+                    >
+                      <h4 className="text-xl font-semibold mb-3 text-white/90">{item.title}</h4>
+                      <p className="text-gray-300">{item.content}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
