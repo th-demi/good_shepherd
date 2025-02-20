@@ -8,6 +8,7 @@ import AcademyGuideBlock from "./components/AcademyGuideBlock";
 import AdmissionsBlock from "./components/AdmissionsBlock";
 import ExamsBlock from "./components/ExamsBlock";
 import TeachersandtutorsBlock from "./components/TeachersandtutorsBlock";
+import ReviewsBlock from "./components/ReviewsBlock";
 import AdmissionsDetails from "./components/AdmissionDetails";
 import FooterTop from "./components/FooterTop";
 import FooterBottom from "./components/FooterBottom";
@@ -38,10 +39,12 @@ export default function Home() {
         </footer>
     </div>
     </AuthProvider>
-    // Add tooltip to navigation icons
     // Add About us, Exams, Admission in the navigation menu
     // No Repeated persons in photos/videos
-    // Add Review block (google review)
-
+    // Photos in reviews
+    // Align what our commnity says
+    // blinker in exam reult hyperlink
+    // Add schools in exam results
+    // Name, Class, Slot,UPI using gpay and Payment details if logged in
   );
 }
