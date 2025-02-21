@@ -54,21 +54,29 @@ const reviews = [
 ];
 
 const ReviewCard = ({ review, index, activeIndex, totalCards }) => {
-  // Calculate the position in the stack (0 is top, higher numbers are deeper in stack)
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if on mobile or larger screen
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      handleResize(); // Call it immediately to set the initial value
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
   const position = (index - activeIndex + totalCards) % totalCards;
 
   const getCardStyle = () => {
-    // Check if on mobile or larger screen
-    const isMobile = window.innerWidth < 768;
-  
-    const positionOffset = isMobile ? 4 : 8;  // Smaller offset for mobile
+    const positionOffset = isMobile ? 4 : 8; // Smaller offset for mobile
     const baseTransform = `translateY(${position * positionOffset}px)`;
     const baseScale = 1 - (position * (isMobile ? 0.01 : 0.02));
     const baseZIndex = totalCards - position;
-  
+
     // Hide content of inactive cards completely
     const isActive = index === activeIndex;
-  
+
     if (isActive) {
       return {
         transform: 'translateY(0) scale(1)',
@@ -76,18 +84,17 @@ const ReviewCard = ({ review, index, activeIndex, totalCards }) => {
         zIndex: totalCards
       };
     }
-  
+
     return {
       transform: `${baseTransform} scale(${baseScale})`,
       opacity: 0.7 - (position * 0.15),
       zIndex: baseZIndex
     };
   };
-  
 
   // Determine if this card is active
   const isActive = index === activeIndex;
-  
+
   // Calculate card visibility class
   const contentVisibilityClass = isActive ? 'opacity-100' : 'opacity-0';
 
@@ -136,7 +143,7 @@ const ReviewCard = ({ review, index, activeIndex, totalCards }) => {
 const ReviewsBlock = () => {
   const [currentReview, setCurrentReview] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(0); // Initialize with a default value
 
   // Handle window resize for responsive behavior
   useEffect(() => {
@@ -144,7 +151,7 @@ const ReviewsBlock = () => {
     if (typeof window !== 'undefined') {
       const handleResize = () => setWindowWidth(window.innerWidth);
       window.addEventListener('resize', handleResize);
-      handleResize();  // Call it immediately to set the initial width
+      handleResize(); // Call it immediately to set the initial width
       return () => window.removeEventListener('resize', handleResize);
     }
   }, []); // Empty dependency ensures this runs once on mount
