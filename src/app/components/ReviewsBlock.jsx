@@ -13,9 +13,15 @@ const reviews = [
     review: "Highly recommended. Tutors are very kind and passionate. Unlike other institutes, here the teaching methodology is liberal, providing more space for students to explore and be creative."
   },
   {
+    username: "Swarna Nirmal",
+    stars: 5,
+    review: "GSIM center has a very good ambience to learn and teachers have vast experience...Friendly with kids and allow them to explore more in music... Rediscover MUSIC in GSIM"
+  },
+  {
     username: "Anita Agnes Lucia P",
     stars: 5,
-    review: "Master Mcenrow is very humble, kind, friendly, and patient with my son. He has vast musical experience and is an excellent teacher. The highlight for me was hearing my son have a jam session with the teacher."
+    review: "Master Mcenrow is very humble, kind, friendly, and patient with my son. He has vast musical experience and is an excellent teacher. The highlight for me was hearing my son have a jam session with the teacher.",
+    image: "/reviews/anita_agnes_lucia_p.png"
   },
   {
     username: "Adarsh Sasidharan",
@@ -26,58 +32,101 @@ const reviews = [
     username: "Bowla Tk",
     stars: 5,
     review: "GSIM is the best music institute, and I'm very glad I found GSIM. MD Deva McEnrow John's hard work and dedication toward the institute is an inspiration to all. Everyone who works at GSIM is kind and caring toward kids."
+  },
+  {
+    username: "John Prabhu",
+    stars: 5,
+    review: "My son is learning music in this school. I am completely satisfied with the way how the classes are taken.",
+    image: "/reviews/john_prabhu.png"
+  },
+  {
+    username: "Nihal Hari",
+    stars: 5,
+    review: "Good, my kids are enjoying their music learning because of the way they are teaching.",
+    image: "/reviews/nihal_hari.png"
+  },
+  {
+    username: "Mono",
+    stars: 5,
+    review: "I am really happy to be a part of student in good shepherd🤩the teachers are very friendly,kind and there teaching is very professional !!! If you want to grow in music, then it is a right place to grow 👍👍",
+    image: "/reviews/mono.png"
   }
 ];
 
 const ReviewCard = ({ review, index, activeIndex, totalCards }) => {
   // Calculate the position in the stack (0 is top, higher numbers are deeper in stack)
   const position = (index - activeIndex + totalCards) % totalCards;
-  
+
   const getCardStyle = () => {
-    // Base transform for inactive cards
-    const baseTransform = `translateY(${position * 8}px)`;
-    const baseScale = 1 - (position * 0.02);
+    // Base transform for inactive cards - smaller offset on mobile
+    const isMobile = window.innerWidth < 768;
+    const positionOffset = isMobile ? 4 : 8;
+    const baseTransform = `translateY(${position * positionOffset}px)`;
+    const baseScale = 1 - (position * (isMobile ? 0.01 : 0.02));
     const baseZIndex = totalCards - position;
     
-    if (index === activeIndex) {
+    // Hide content of inactive cards completely
+    const isActive = index === activeIndex;
+
+    if (isActive) {
       return {
         transform: 'translateY(0) scale(1)',
         opacity: 1,
         zIndex: totalCards
       };
     }
-    
+
     return {
       transform: `${baseTransform} scale(${baseScale})`,
-      opacity: 1 - (position * 0.15),
+      opacity: 0.7 - (position * 0.15),
       zIndex: baseZIndex
     };
   };
 
+  // Determine if this card is active
+  const isActive = index === activeIndex;
+  
+  // Calculate card visibility class
+  const contentVisibilityClass = isActive ? 'opacity-100' : 'opacity-0';
+
   return (
     <div
-      className="absolute w-full bg-white p-6 rounded-lg transition-all duration-700"
+      className="absolute w-full bg-white p-3 sm:p-4 md:p-6 rounded-lg shadow-lg transition-all duration-700"
       style={{
         ...getCardStyle(),
         top: 0,
         left: 0,
-        right: 0
+        right: 0,
+        overflow: 'hidden' // Prevent content from overflowing the card
       }}
     >
-      <div className="flex items-center mb-4">
-        <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-          <span className="text-lg">{review.username[0]}</span>
-        </div>
-        <div className="ml-4">
-          <h4 className="font-medium">{review.username}</h4>
-          <div className="flex">
-            {[...Array(review.stars)].map((_, i) => (
-              <span key={i} className="text-yellow-400">★</span>
-            ))}
+      {/* Card inner content with conditional visibility */}
+      <div className={`transition-opacity duration-300 ${contentVisibilityClass}`}>
+        <div className="flex items-center mb-2 md:mb-4">
+          <div className="w-8 h-8 md:w-12 md:h-12 bg-gray-300 rounded-full flex items-center justify-center">
+            {review.image ? (
+              <img
+                src={review.image}
+                alt={review.username}
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <span className="text-sm md:text-lg">{review.username[0]}</span>
+            )}
+          </div>
+          <div className="ml-2 md:ml-4">
+            <h4 className="text-sm md:text-base font-medium">{review.username}</h4>
+            <div className="flex">
+              {[...Array(review.stars)].map((_, i) => (
+                <span key={i} className="text-yellow-400 text-xs md:text-base">★</span>
+              ))}
+            </div>
           </div>
         </div>
+        <p className="text-black text-sm md:text-base leading-relaxed line-clamp-4 md:line-clamp-none">
+          {review.review}
+        </p>
       </div>
-      <p className="text-black leading-relaxed">{review.review}</p>
     </div>
   );
 };
@@ -85,6 +134,27 @@ const ReviewCard = ({ review, index, activeIndex, totalCards }) => {
 const ReviewsBlock = () => {
   const [currentReview, setCurrentReview] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 0
+  );
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      handleResize();
+    }
+    
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -113,12 +183,27 @@ const ReviewsBlock = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Calculate appropriate height based on screen size
+  const getStackHeight = () => {
+    if (windowWidth < 640) return 'h-60'; // Small mobile
+    if (windowWidth < 768) return 'h-64'; // Mobile
+    if (windowWidth < 1024) return 'h-72'; // Tablet
+    return 'h-80'; // Desktop
+  };
+
   return (
-    <div className="bg-custom-red text-black py-12">
+    <div className="bg-custom-red text-black py-8 md:py-12">
       <div className="container mx-auto px-4">
+        {/* Title - Appears first on mobile */}
+        <div className="mb-6 md:hidden">
+          <h2 className="text-5xl sm:text-4xl font-thin text-left">
+            WHAT OUR COMMUNITY SAYS
+          </h2>
+        </div>
+
         <div className="flex flex-wrap items-center">
-          {/* Image Section */}
-          <div className="md:w-[41.66%] md:ml-[8.33%] lg:ml-0 mb-6 sm:mb-8">
+          {/* Image Section - Second on mobile, first on desktop (left side) */}
+          <div className="w-full md:w-[41.66%] md:ml-[8.33%] lg:ml-0 mb-6 sm:mb-8 md:order-1">
             <div
               data-intersect="once"
               className={`transform transition-opacity duration-500 ${
@@ -133,18 +218,21 @@ const ReviewsBlock = () => {
             </div>
           </div>
 
-          {/* Reviews Section */}
-          <div className="md:w-[41.66%] md:ml-[8.33%] lg:ml-[16.66%]">
+          {/* Reviews Section - Third on mobile, second on desktop (right side) */}
+          <div className="w-full md:w-[41.66%] md:ml-[8.33%] lg:ml-[16.66%] md:order-2">
             <div
               data-intersect="once"
               className={`transform transition-transform duration-500 ${
                 isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
               }`}
             >
-              <h2 className="text-7xl font-thin mb-12">WHAT OUR COMMUNITY SAYS</h2>
+              {/* Title - Hidden on mobile, visible on desktop */}
+              <h2 className="hidden md:block text-5xl lg:text-7xl font-thin mb-12 text-left">
+                WHAT OUR COMMUNITY SAYS
+              </h2>
               
               {/* Reviews Stack */}
-              <div className="relative h-80">
+              <div className={`relative ${getStackHeight()}`}>
                 {reviews.map((review, index) => (
                   <ReviewCard
                     key={index}
@@ -157,13 +245,13 @@ const ReviewsBlock = () => {
               </div>
 
               {/* Review Navigation Dots */}
-              <div className="flex justify-center mt-8 space-x-2">
+              <div className="flex justify-center mt-4 md:mt-8 space-x-2">
                 {reviews.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentReview(index)}
                     className={`w-2 h-2 rounded-full transition-all duration-300 
-                      ${currentReview === index ? 'bg-white w-6' : 'bg-white/40'}`}
+                      ${currentReview === index ? 'bg-white w-4 sm:w-6' : 'bg-white/40'}`}
                     aria-label={`Go to review ${index + 1}`}
                   />
                 ))}

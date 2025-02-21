@@ -27,7 +27,7 @@ export default function Home() {
           <RecitalBlock />
           <ExamsBlock />
           <TeachersandtutorsBlock />
-          {/* <ReviewsBlock /> */}
+          <ReviewsBlock />
           <AdmissionsBlock />
           {/*<FutureOfMusicBlock />*/}
           {/* <AdmissionsDetails /> */}

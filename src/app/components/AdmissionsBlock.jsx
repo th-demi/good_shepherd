@@ -30,35 +30,22 @@ export default function AdmissionsBlock() {
   return (
     <div className="bg-white py-16">
       <div className="container mx-auto px-4">
+        {/* Heading - Always at the top regardless of screen size */}
+        <h2
+          data-intersect="once"
+          className={`text-5xl md:text-5xl lg:text-7xl text-custom-red font-thin mb-6 transform transition-transform duration-500 ${
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}
+        >
+          ADMISSIONS
+        </h2>
+        
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column (Title + Form/Details) */}
-          <div className="w-full lg:w-1/2 order-1 lg:order-1">
-            {/* Heading - Always visible, responsive size */}
-            <h2
-              data-intersect="once"
-              className={`text-4xl md:text-5xl lg:text-7xl text-custom-red font-thin mb-6 transform transition-transform duration-500 ${
-                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-              }`}
-            >
-              ADMISSIONS
-            </h2>
-
-            {/* Form or AdmissionsDetails */}
+          {/* Image - First on mobile, second on desktop */}
+          <div className="w-full lg:w-1/2 order-1 lg:order-2">
             <div
               data-intersect="once"
-              className={`transform transition-transform duration-500 ${
-                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-              }`}
-            >
-              {isLoggedIn ? <AdmissionsDetails /> : <MusicRegistrationForm />}
-            </div>
-          </div>
-
-          {/* Right Column (Image) */}
-          <div className="w-full lg:w-1/2 order-2 lg:order-2">
-            <div
-              data-intersect="once"
-              className={`transform transition-opacity duration-500 ${
+              className={`transform transition-opacity duration-500 mb-6 lg:mb-0 ${
                 isVisible ? 'opacity-100' : 'opacity-0'
               }`}
             >
@@ -67,6 +54,18 @@ export default function AdmissionsBlock() {
                 alt="Admissions"
                 className="w-full h-auto grayscale"
               />
+            </div>
+          </div>
+
+          {/* Form - Second on mobile, first on desktop */}
+          <div className="w-full lg:w-1/2 order-2 lg:order-1">
+            <div
+              data-intersect="once"
+              className={`transform transition-transform duration-500 ${
+                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+              }`}
+            >
+              {isLoggedIn ? <AdmissionsDetails /> : <MusicRegistrationForm />}
             </div>
           </div>
         </div>
