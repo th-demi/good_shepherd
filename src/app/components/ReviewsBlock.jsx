@@ -58,16 +58,17 @@ const ReviewCard = ({ review, index, activeIndex, totalCards }) => {
   const position = (index - activeIndex + totalCards) % totalCards;
 
   const getCardStyle = () => {
-    // Base transform for inactive cards - smaller offset on mobile
+    // Check if on mobile or larger screen
     const isMobile = window.innerWidth < 768;
-    const positionOffset = isMobile ? 4 : 8;
+  
+    const positionOffset = isMobile ? 4 : 8;  // Smaller offset for mobile
     const baseTransform = `translateY(${position * positionOffset}px)`;
     const baseScale = 1 - (position * (isMobile ? 0.01 : 0.02));
     const baseZIndex = totalCards - position;
-    
+  
     // Hide content of inactive cards completely
     const isActive = index === activeIndex;
-
+  
     if (isActive) {
       return {
         transform: 'translateY(0) scale(1)',
@@ -75,13 +76,14 @@ const ReviewCard = ({ review, index, activeIndex, totalCards }) => {
         zIndex: totalCards
       };
     }
-
+  
     return {
       transform: `${baseTransform} scale(${baseScale})`,
       opacity: 0.7 - (position * 0.15),
       zIndex: baseZIndex
     };
   };
+  
 
   // Determine if this card is active
   const isActive = index === activeIndex;
@@ -134,27 +136,18 @@ const ReviewCard = ({ review, index, activeIndex, totalCards }) => {
 const ReviewsBlock = () => {
   const [currentReview, setCurrentReview] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 0
-  );
+  const [windowWidth, setWindowWidth] = useState(0);
 
-  // Handle window resize
+  // Handle window resize for responsive behavior
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    
+    // Check if the window is available (client-side only)
     if (typeof window !== 'undefined') {
+      const handleResize = () => setWindowWidth(window.innerWidth);
       window.addEventListener('resize', handleResize);
-      handleResize();
+      handleResize();  // Call it immediately to set the initial width
+      return () => window.removeEventListener('resize', handleResize);
     }
-    
-    return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('resize', handleResize);
-      }
-    };
-  }, []);
+  }, []); // Empty dependency ensures this runs once on mount
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -179,16 +172,15 @@ const ReviewsBlock = () => {
     const interval = setInterval(() => {
       setCurrentReview((prev) => (prev + 1) % reviews.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
-  // Calculate appropriate height based on screen size
+  // Dynamically adjust height based on screen size
   const getStackHeight = () => {
-    if (windowWidth < 640) return 'h-60'; // Small mobile
-    if (windowWidth < 768) return 'h-64'; // Mobile
-    if (windowWidth < 1024) return 'h-72'; // Tablet
-    return 'h-80'; // Desktop
+    if (windowWidth < 640) return 'h-60'; // Mobile height
+    if (windowWidth < 768) return 'h-64'; // Mobile height
+    if (windowWidth < 1024) return 'h-72'; // Tablet height
+    return 'h-80'; // Desktop height
   };
 
   return (
@@ -202,13 +194,11 @@ const ReviewsBlock = () => {
         </div>
 
         <div className="flex flex-wrap items-center">
-          {/* Image Section - Second on mobile, first on desktop (left side) */}
+          {/* Image Section */}
           <div className="w-full md:w-[41.66%] md:ml-[8.33%] lg:ml-0 mb-6 sm:mb-8 md:order-1">
             <div
               data-intersect="once"
-              className={`transform transition-opacity duration-500 ${
-                isVisible ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`transform transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
             >
               <img
                 src="/music_student.jpg"
@@ -218,15 +208,12 @@ const ReviewsBlock = () => {
             </div>
           </div>
 
-          {/* Reviews Section - Third on mobile, second on desktop (right side) */}
+          {/* Reviews Section */}
           <div className="w-full md:w-[41.66%] md:ml-[8.33%] lg:ml-[16.66%] md:order-2">
             <div
               data-intersect="once"
-              className={`transform transition-transform duration-500 ${
-                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-              }`}
+              className={`transform transition-transform duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
             >
-              {/* Title - Hidden on mobile, visible on desktop */}
               <h2 className="hidden md:block text-5xl lg:text-7xl font-thin mb-12 text-left">
                 WHAT OUR COMMUNITY SAYS
               </h2>
@@ -245,13 +232,12 @@ const ReviewsBlock = () => {
               </div>
 
               {/* Review Navigation Dots */}
-              <div className="flex justify-center mt-4 md:mt-8 space-x-2">
+              <div className="flex justify-center space-x-2">
                 {reviews.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentReview(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 
-                      ${currentReview === index ? 'bg-white w-4 sm:w-6' : 'bg-white/40'}`}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${currentReview === index ? 'bg-white w-4 sm:w-6' : 'bg-white/40'}`}
                     aria-label={`Go to review ${index + 1}`}
                   />
                 ))}
@@ -263,5 +249,6 @@ const ReviewsBlock = () => {
     </div>
   );
 };
+
 
 export default ReviewsBlock;
