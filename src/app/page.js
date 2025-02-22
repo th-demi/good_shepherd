@@ -40,11 +40,7 @@ export default function Home() {
     </div>
     </AuthProvider>
     // Add About us, Exams, Admission in the navigation menu
-    // No Repeated persons in photos/videos
-    // Photos in reviews
-    // Align what our commnity says
-    // blinker in exam reult hyperlink
-    // Add schools in exam results
+    // blinker in exam result hyperlink
     // Name, Class, Slot,UPI using gpay and Payment details if logged in
   );
 }

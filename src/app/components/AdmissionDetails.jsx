@@ -1,26 +1,28 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
+import { Loader2 } from 'lucide-react';
 
 const AdmissionsDetails = () => {
-  const [admissionsData, setAdmissionsData] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [admissionsData, setAdmissionsData] = React.useState([]);
+  const [selectedStudent, setSelectedStudent] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+  const [showDetails, setShowDetails] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchAdmissions = async () => {
       try {
         const response = await fetch('/api/getAdmissions');
         const data = await response.json();
-
+        
         if (response.ok) {
           setAdmissionsData(data.data);
         } else {
-          setError(data.error || 'Failed to fetch data.');
+          throw new Error(data.error || 'Failed to fetch data.');
         }
       } catch (err) {
-        setError('Error fetching admissions data.');
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -29,126 +31,159 @@ const AdmissionsDetails = () => {
     fetchAdmissions();
   }, []);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return format(date, 'MMM dd, yyyy');
+  const handleStudentSelect = (student) => {
+    setShowDetails(false);
+    setSelectedStudent(student);
+    setTimeout(() => setShowDetails(true), 300);
   };
 
-  return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-12rem)] bg-gray-50 rounded-lg overflow-hidden">
-      {/* Left Column - Names List */}
-      <div className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-gray-200 bg-white">
-        <div className="sticky top-0 bg-white z-10 p-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-800">Admissions</h2>
+  const formatDate = React.useCallback((dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'MMM dd, yyyy');
+  }, []);
+
+  if (error) {
+    return (
+      <div className="flex h-[calc(100vh-12rem)] items-center justify-center">
+        <div className="text-red-500 bg-red-50 px-4 py-3 rounded-lg shadow animate-bounce">
+          {error}
         </div>
-        <div className="divide-y divide-gray-100 max-h-[calc(100vh-16rem)] overflow-y-auto">
-          {loading && (
-            <div className="text-center py-4">Loading admissions...</div>
-          )}
-          {error && (
-            <div className="text-center py-4 text-red-500">{error}</div>
-          )}
-          {!loading && !error && admissionsData.length === 0 && (
-            <div className="text-center py-4">No admissions found</div>
-          )}
-          {admissionsData.map((student) => (
-            <button
-              key={student._id}
-              onClick={() => setSelectedStudent(student)}
-              className={`w-full text-left px-4 py-3 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors duration-150 ${
-                selectedStudent?._id === student._id ? 'bg-gray-100' : ''
-              }`}
-            >
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-gray-900 truncate">
-                  {student.Name}
-                </p>
-                <p className="text-xs text-gray-500 truncate">
-                  {student['Type of Musical Instrument']}
-                </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-12rem)] bg-gradient-to-br from-gray-50 to-white rounded-xl overflow-hidden shadow-2xl transition-all duration-500">
+      {/* Left Column - Names List */}
+      <div className="w-full lg:w-96 border-b lg:border-b-0 lg:border-r border-gray-200 bg-white/80 backdrop-blur-sm">
+        <div className="sticky top-0 bg-white/90 backdrop-blur-md z-10 p-4 border-b border-gray-200">
+          <h2 className="text-xl font-bold">
+            Admissions
+          </h2>
+        </div>        
+        <div className="divide-y divide-gray-100 max-h-[calc(100vh-16rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            </div>
+          ) : admissionsData.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">No admissions found</div>
+          ) : (
+            admissionsData.map((student, index) => (
+              <div
+                key={student._id}
+                className="transform transition-all duration-300"
+                style={{ 
+                  animationDelay: `${index * 50}ms`,
+                  opacity: 0,
+                  animation: 'fadeSlideIn 0.5s ease forwards'
+                }}
+              >
+                <button
+                  onClick={() => handleStudentSelect(student)}
+                  className={`w-full text-left px-6 py-4 transition-all duration-300 
+                    ${selectedStudent?._id === student._id 
+                      ? 'bg-gray-100 border-l-4 border-blue-500 shadow-inner' 
+                      : 'hover:bg-gray-50'}`}
+                >
+                  <p className={`text-sm font-semibold transition-colors duration-300`}>
+                    {student.Name}
+                  </p>
+                  <p className={`text-xs mt-1 transition-colors duration-300`}>
+                    {student['Type of Musical Instrument']}
+                  </p>
+                </button>
               </div>
-            </button>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
       {/* Right Column - Details View */}
-      <div className="flex-1 overflow-y-auto bg-white">
+      <div className="flex-1 overflow-y-auto bg-white/80 backdrop-blur-sm">
         {selectedStudent ? (
-          <div className="p-4 sm:p-6 max-h-[calc(100vh-16rem)] overflow-y-auto">
-            <div className="mb-6">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                {selectedStudent.Name}
-              </h1>
+          <div 
+            className={`p-6 max-h-[calc(100vh-16rem)] overflow-y-auto transition-all duration-500 transform
+              ${showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <div className="mb-8 space-y-2">
+              <h1 className="text-3xl font-bold text-gray-900">{selectedStudent.Name}</h1>
               <p className="text-sm text-gray-500">
                 Admitted on {formatDate(selectedStudent.createdAt)}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              <div className="space-y-4">
-                <DetailItem
-                  label="Activity Status"
-                  value={selectedStudent['Activity Status']}
-                />
-                <DetailItem
-                  label="Gender"
-                  value={selectedStudent.Gender}
-                />
-                <DetailItem
-                  label="School/College/Occupation"
-                  value={selectedStudent['School / College / Occupation']}
-                />
-                <DetailItem
-                  label="Musical Instrument"
-                  value={selectedStudent['Type of Musical Instrument']}
-                />
-              </div>
-
-              <div className="space-y-4">
-                <DetailItem
-                  label="Email"
-                  value={selectedStudent['E - mail']}
-                  type="email"
-                />
-                <DetailItem
-                  label="Phone"
-                  value={selectedStudent['Phone number']}
-                  type="phone"
-                />
-                <DetailItem
-                  label="Address"
-                  value={selectedStudent['Residence Address']}
-                />
-                <DetailItem
-                  label="Date of Birth"
-                  value={formatDate(selectedStudent['Date of Birth'])}
-                />
-              </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {[
+                { label: "Activity Status", value: selectedStudent['Activity Status'] },
+                { label: "Gender", value: selectedStudent.Gender },
+                { label: "School/College/Occupation", value: selectedStudent['School / College / Occupation'] },
+                { label: "Musical Instrument", value: selectedStudent['Type of Musical Instrument'] },
+                { label: "Email", value: selectedStudent['E - mail'], type: "email" },
+                { label: "Phone", value: selectedStudent['Phone number'], type: "phone" },
+                { label: "Address", value: selectedStudent['Residence Address'] },
+                { label: "Date of Birth", value: formatDate(selectedStudent['Date of Birth']) }
+              ].map((detail, index) => (
+                <div
+                  key={detail.label}
+                  className="transform transition-all duration-500"
+                  style={{ 
+                    animationDelay: `${showDetails ? (index * 100) + 200 : 0}ms`,
+                    opacity: 0,
+                    animation: showDetails ? 'fadeSlideUp 0.5s ease forwards' : 'none'
+                  }}
+                >
+                  <DetailCard {...detail} />
+                </div>
+              ))}
             </div>
           </div>
         ) : (
           <div className="h-full flex items-center justify-center text-gray-500">
-            <p>Select a student to view details</p>
+            <p className="text-lg animate-pulse">Select a student to view details</p>
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        @keyframes fadeSlideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes fadeSlideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 };
 
-const DetailItem = ({ label, value, type }) => {
+const DetailCard = ({ label, value, type }) => {
   const renderValue = () => {
     if (type === 'email') {
       return (
-        <a href={`mailto:${value}`} className="text-blue-600 hover:underline">
+        <a href={`mailto:${value}`} className="text-blue-600 hover:text-blue-700 hover:underline">
           {value}
         </a>
       );
     }
     if (type === 'phone') {
       return (
-        <a href={`tel:${value}`} className="text-blue-600 hover:underline">
+        <a href={`tel:${value}`} className="text-blue-600 hover:text-blue-700 hover:underline">
           {value}
         </a>
       );
@@ -157,9 +192,11 @@ const DetailItem = ({ label, value, type }) => {
   };
 
   return (
-    <div className="bg-gray-50 p-4 rounded-lg">
-      <dt className="text-sm font-medium text-gray-500">{label}</dt>
-      <dd className="mt-1 text-sm text-gray-900 break-words">{renderValue()}</dd>
+    <div className="group bg-white p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 border border-gray-100 hover:border-blue-100">
+      <dt className="text-sm font-medium text-gray-500 group-hover:text-blue-600 transition-colors duration-300">
+        {label}
+      </dt>
+      <dd className="mt-2 text-sm text-gray-900 break-words">{renderValue()}</dd>
     </div>
   );
 };

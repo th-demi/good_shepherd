@@ -22,12 +22,12 @@ const YouTubeIcon = () => (
 const FooterTop = () => {
   return (
     <div className="bg-black text-white py-8">
-      <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
           {/* Social Media Navigation */}
-          <nav aria-label="Social" className="mb-6 md:mb-0">
+          <nav aria-label="Social" className="w-full md:w-auto">
             <h5 className="sr-only">Social Media Navigation</h5>
-            <ul className="flex space-x-6">
+            <ul className="flex justify-center md:justify-start space-x-6">
               <li>
                 <a
                   href="https://www.facebook.com/goodshepherdmusic/?_rdr"
@@ -68,13 +68,31 @@ const FooterTop = () => {
           </nav>
 
           {/* Secondary Navigation */}
-          <nav aria-label="Secondary Navigation" className="md:ml-auto">
+          <nav aria-label="Secondary Navigation" className="w-full md:w-auto">
             <h5 className="sr-only">Secondary Navigation</h5>
-            <ul className="flex flex-wrap md:flex-nowrap items-center space-x-4 md:space-x-8">
-              <li className="whitespace-nowrap">
+            <ul className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 lg:space-x-8">
+              <li>
                 <Link href="/about-us" className="relative text-white font-bold group">
                   About us
-                  <span className="absolute left-0 bottom-0 block w-0 h-0.25 bg-custom-red transition-all duration-30 group-hover:w-full"></span>
+                  <span className="absolute left-0 bottom-0 block w-0 h-0.25 bg-custom-red transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms-and-conditions" className="relative text-white font-bold group">
+                  Terms and Conditions
+                  <span className="absolute left-0 bottom-0 block w-0 h-0.25 bg-custom-red transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy-policy" className="relative text-white font-bold group">
+                  Privacy Policy
+                  <span className="absolute left-0 bottom-0 block w-0 h-0.25 bg-custom-red transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/cancellations-and-refunds" className="relative text-white font-bold group">
+                  Cancellations and Refunds
+                  <span className="absolute left-0 bottom-0 block w-0 h-0.25 bg-custom-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
             </ul>

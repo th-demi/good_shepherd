@@ -1,50 +1,122 @@
 // src/components/CancellationsAndRefunds.jsx
 
+'use client';
+import React from 'react';
 import "../app/globals.css";
 
-export default function CancellationsAndRefunds() {
-    return (
-        <div className="mt-8 w-full max-w-lg text-gray-700">
-            <h2 className="text-2xl font-semibold mb-4">Cancellations and Refunds</h2>
-            <div className="text-lg">
-                <h3 className="text-xl font-semibold mt-4">Returns</h3>
-                <p>Our policy lasts 30 days. If 30 days have gone by since your purchase, unfortunately, we can’t offer you a refund or exchange.</p>
-                <p>To be eligible for a return, your item must be unused and in the same condition that you received it. It must also be in the original packaging.</p>
-                
-                <h3 className="text-xl font-semibold mt-4">Non-returnable Items</h3>
-                <ul className="list-disc pl-5 mt-2">
-                    <li>Perishable goods such as food, flowers, newspapers, or magazines</li>
-                    <li>Intimate or sanitary goods</li>
-                    <li>Hazardous materials, or flammable liquids or gases</li>
-                    <li>Gift cards</li>
-                    <li>Downloadable software products</li>
-                    <li>Some health and personal care items</li>
-                </ul>
+const CancellationsAndRefunds = () => {
+  const terms = [
+    "Our policy lasts 30 days. If 30 days have gone by since your purchase, unfortunately, we can't offer you a refund or exchange.",
+    "To be eligible for a return, your item must be unused and in the same condition that you received it. It must also be in the original packaging.",
+    "Perishable goods, intimate or sanitary items, hazardous materials, and gift cards are non-returnable.",
+    "Refunds are processed after inspection of the returned item, and a credit will be applied to the original payment method.",
+    "Sale items cannot be refunded.",
+    "We only replace items if they are defective or damaged. Contact us for exchanges."
+  ];
 
-                <h3 className="text-xl font-semibold mt-4">Refunds</h3>
-                <p>Once your return is received and inspected, we will notify you by email regarding the approval or rejection of your refund.</p>
-                <p>If approved, your refund will be processed, and a credit will be applied to your credit card or original method of payment within a certain number of days.</p>
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+      <div 
+        className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden"
+        style={{
+          opacity: 0,
+          animation: 'fadeIn 0.6s ease-out forwards'
+        }}
+      >
+        <div className="px-6 py-8 sm:px-8">
+          {/* Header */}
+          <div className="text-center mb-12 pb-6 border-b border-gray-100">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Cancellations and Refunds</h2>
+            <p className="text-gray-600">Last updated: February 2024</p>
+          </div>
 
-                <h3 className="text-xl font-semibold mt-4">Late or Missing Refunds</h3>
-                <p>If you haven’t received a refund yet, please:</p>
-                <ul className="list-disc pl-5 mt-2">
-                    <li>Check your bank account again.</li>
-                    <li>Contact your credit card company; it may take some time before your refund is officially posted.</li>
-                    <li>Contact your bank; there may be some processing time before the refund is posted.</li>
-                    <li>If you've done all of this and still have not received your refund, contact us at <a href="mailto:goodshepherdim@gmail.com" className="text-blue-500">goodshepherdim@gmail.com</a></li>
-                </ul>
+          {/* Introduction */}
+          <div 
+            className="mb-8 text-lg text-gray-700"
+            style={{
+              opacity: 0,
+              animation: 'slideUp 0.6s ease-out forwards 0.2s'
+            }}
+          >
+            <p className="bg-blue-50 p-6 rounded-xl">
+              By enrolling in a course or purchasing goods from Good Shepherd Institute of Music, you agree to abide by our cancellations and refund policies. Please read them carefully.
+            </p>
+          </div>
 
-                <h3 className="text-xl font-semibold mt-4">Sale Items</h3>
-                <p>Only regular priced items may be refunded; sale items cannot be refunded.</p>
+          {/* Terms List */}
+          <div className="space-y-4">
+            {terms.map((term, index) => (
+              <div
+                key={index}
+                className="flex items-start p-4 rounded-xl hover:bg-gray-50 transition-all duration-300 transform"
+                style={{
+                  opacity: 0,
+                  animation: `slideUp 0.6s ease-out forwards ${0.3 + index * 0.1}s`
+                }}
+              >
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                  <span className="text-blue-600 font-semibold">{index + 1}</span>
+                </div>
+                <p className="text-gray-700 text-lg">{term}</p>
+              </div>
+            ))}
+          </div>
 
-                <h3 className="text-xl font-semibold mt-4">Exchanges</h3>
-                <p>We only replace items if they are defective or damaged. If you need to exchange it for the same item, email us at <a href="mailto:goodshepherdim@gmail.com" className="text-blue-500">goodshepherdim@gmail.com</a> and send the item to: 622 Manglam Electronic Market, Jaipur, Rajasthan, India 302001.</p>
-
-                <h3 className="text-xl font-semibold mt-4">Shipping</h3>
-                <p>You are responsible for paying your own shipping costs for returning your item. Shipping costs are non-refundable. If you receive a refund, the return shipping cost will be deducted from your refund.</p>
-                <p>Depending on your location, the time it may take for your exchanged product to reach you may vary.</p>
-                <p>If you are shipping an item over $75, you should consider using a trackable shipping service or purchasing shipping insurance, as we do not guarantee that we will receive your returned item.</p>
+          {/* Contact Section */}
+          <div 
+            className="mt-12 bg-blue-50 rounded-xl p-8 transform transition-all duration-500 hover:shadow-lg"
+            style={{
+              opacity: 0,
+              animation: 'slideUp 0.6s ease-out forwards 0.8s'
+            }}
+          >
+            <h3 className="text-2xl font-bold text-blue-900 mb-4">Questions or Concerns?</h3>
+            <p className="text-blue-800 mb-6">
+              If you have any questions about these terms or need clarification, please don't hesitate to contact us:
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
+              <a 
+                href="tel:+919884556997"
+                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                +91 98845 56997
+              </a>
+              <a 
+                href="mailto:goodshepherdim@gmail.com"
+                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Email Us
+              </a>
             </div>
+          </div>
         </div>
-    );
-}
+      </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default CancellationsAndRefunds;
