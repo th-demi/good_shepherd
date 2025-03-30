@@ -2,10 +2,10 @@
 import { useState, useEffect, useContext } from 'react';
 import MusicRegistrationForm from './MusicRegistrationForm';
 import AdmissionsDetails from './AdmissionDetails';
-import { AuthContext } from './MainNavigation';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdmissionsBlock() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useAuth();
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false); // Track screen width for mobile
 
@@ -43,7 +43,7 @@ export default function AdmissionsBlock() {
   }, []);
 
   return (
-    <div className="bg-white py-16">
+    <div id='admissions' className="bg-white  py-16">
       <div className="container mx-auto px-4">
         {/* Heading - Always at the top regardless of screen size */}
         <h2

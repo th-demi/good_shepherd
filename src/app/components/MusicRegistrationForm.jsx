@@ -60,8 +60,8 @@ const instrumentOptions = [
   "Ukulele",
   "Classical Vocals",
   "Western Vocals",
-  "Dance",
-  "Other"
+  "Bharatanatyam",
+  "Western Dance",
 ]
 
 export default function MusicRegistrationForm() {

@@ -1,8 +1,16 @@
-// src/components/TermsAndConditions.jsx
 'use client';
-import React from 'react';
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import BackButton from "@/components/ui/back-button";
 import "../app/globals.css";
+
 const TermsAndConditions = () => {
+  const [isBackButtonVisible, setIsBackButtonVisible] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(false);
+  const [isIntroVisible, setIsIntroVisible] = useState(false);
+  const [isTermsVisible, setIsTermsVisible] = useState(false);
+  const [isContactVisible, setIsContactVisible] = useState(false);
+
   const terms = [
     "Classes are subject to availability.",
     "Payment must be made in advance for course enrollment.",
@@ -16,110 +24,100 @@ const TermsAndConditions = () => {
     "Fees once paid are non-refundable."
   ];
 
+  useEffect(() => {
+    const timers = [
+      setTimeout(() => setIsHeaderVisible(true), 100),
+      setTimeout(() => setIsIntroVisible(true), 200),
+      setTimeout(() => setIsTermsVisible(true), 300),
+      setTimeout(() => setIsContactVisible(true), 400),
+      setTimeout(() => setIsBackButtonVisible(true), 500)
+    ];
+
+    return () => timers.forEach(timer => clearTimeout(timer));
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
-      <div 
-        className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden"
-        style={{
-          opacity: 0,
-          animation: 'fadeIn 0.6s ease-out forwards'
-        }}
-      >
-        <div className="px-6 py-8 sm:px-8">
-          {/* Header */}
-          <div className="text-center mb-12 pb-6 border-b border-gray-100">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Terms and Conditions</h2>
-            <p className="text-gray-600">Last updated: February 2024</p>
+    <>
+      <Head>
+        <title>Terms and Conditions - GSIM</title>
+        <meta name="description" content="Terms and conditions for Good Shepherd Institute of Music" />
+      </Head>
+
+      <div className="bg-black text-white min-h-screen py-12">
+        <div className="container mx-auto px-4">
+          {/* Back Button */}
+          <div className={`absolute left-0 top-10 sm:left-6 transition-opacity duration-500 ${isBackButtonVisible ? "opacity-100" : "opacity-0"}`}>
+            <BackButton />
           </div>
 
-          {/* Introduction */}
-          <div 
-            className="mb-8 text-lg text-gray-700"
-            style={{
-              opacity: 0,
-              animation: 'slideUp 0.6s ease-out forwards 0.2s'
-            }}
-          >
-            <p className="bg-blue-50 p-6 rounded-xl">
-              By enrolling in courses or using services provided by Good Shepherd Institute of Music, 
-              you agree to comply with and be bound by the following terms and conditions. 
-              Please read these carefully before proceeding with registration.
-            </p>
-          </div>
+          {/* Main Content */}
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <div className={`text-center mb-12 transition-opacity duration-500 ${isHeaderVisible ? "opacity-100" : "opacity-0"}`}>
+              <h2 className="text-4xl md:text-5xl font-thin mb-4">Terms and Conditions</h2>
+              <p className="text-gray-400">Last updated: March 2025</p>
+            </div>
 
-          {/* Terms List */}
-          <div className="space-y-4">
-            {terms.map((term, index) => (
-              <div
-                key={index}
-                className="flex items-start p-4 rounded-xl hover:bg-gray-50 transition-all duration-300 transform"
-                style={{
-                  opacity: 0,
-                  animation: `slideUp 0.6s ease-out forwards ${0.3 + index * 0.1}s`
-                }}
-              >
-                <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-blue-600 font-semibold">{index + 1}</span>
+            {/* Introduction */}
+            <div className={`mb-12 bg-white/5 p-6 rounded-xl backdrop-blur-sm transition-opacity duration-500 ${isIntroVisible ? "opacity-100" : "opacity-0"}`}>
+              <p className="text-gray-300 leading-relaxed">
+                By enrolling in courses or using services provided by Good Shepherd Institute of Music, 
+                you agree to comply with and be bound by the following terms and conditions. 
+                Please read these carefully before proceeding with registration.
+              </p>
+            </div>
+
+            {/* Terms List */}
+            <div className="space-y-4 mb-12">
+              {terms.map((term, index) => (
+                <div
+                  key={index}
+                  className={`flex items-start p-6 rounded-xl bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 ${
+                    isTermsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  }`}
+                  style={{ transitionDelay: `${index * 50}ms` }}
+                >
+                  <div className="flex-shrink-0 w-8 h-8 bg-white/10 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-white font-semibold">{index + 1}</span>
+                  </div>
+                  <p className="text-gray-300">{term}</p>
                 </div>
-                <p className="text-gray-700 text-lg">{term}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Contact Section */}
-          <div 
-            className="mt-12 bg-blue-50 rounded-xl p-8 transform transition-all duration-500 hover:shadow-lg"
-            style={{
-              opacity: 0,
-              animation: 'slideUp 0.6s ease-out forwards 0.8s'
-            }}
-          >
-            <h3 className="text-2xl font-bold text-blue-900 mb-4">Questions or Concerns?</h3>
-            <p className="text-blue-800 mb-6">
-              If you have any questions about these terms or need clarification, please don't hesitate to contact us:
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 items-center">
-              <a 
-                href="tel:+919884556997"
-                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                +91 98845 56997
-              </a>
-              <a 
-                href="mailto:goodshepherdim@gmail.com"
-                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                Email Us
-              </a>
+            {/* Contact Section */}
+            <div className={`bg-gradient-to-br from-white/10 to-white/5 p-8 rounded-xl backdrop-blur-sm transition-opacity duration-500 ${
+              isContactVisible ? "opacity-100" : "opacity-0"
+            }`}>
+              <h3 className="text-2xl font-thin text-white mb-4">Questions or Concerns?</h3>
+              <p className="text-gray-400 mb-6">
+                If you have any questions about these terms or need clarification, please don't hesitate to contact us:
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a 
+                  href="tel:+919884556997"
+                  className="inline-flex items-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-300"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  +91 98845 56997
+                </a>
+                <a 
+                  href="mailto:goodshepherdim@gmail.com"
+                  className="inline-flex items-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-300"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Email Us
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
-    </div>
+    </>
   );
 };
 

@@ -1,14 +1,27 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import BackButton from "@/components/ui/back-button";
 import "../app/globals.css";
 
 export default function AboutUsPage() {
   const [activeSection, setActiveSection] = useState('about');
-  const [isVisible, setIsVisible] = useState(false);
+  const [isLogoVisible, setIsLogoVisible] = useState(false);
+  const [isTitleVisible, setIsTitleVisible] = useState(false);
+  const [isTabsVisible, setIsTabsVisible] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
+  const [isBackButtonVisible, setIsBackButtonVisible] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true);
+    const timers = [
+      setTimeout(() => setIsLogoVisible(true), 100),       // Logo appears first
+      setTimeout(() => setIsTitleVisible(true), 200),     // Title appears second
+      setTimeout(() => setIsTabsVisible(true), 300),      // Tabs appear third
+      setTimeout(() => setIsContentVisible(true), 400),   // Content appears fourth
+      setTimeout(() => setIsBackButtonVisible(true), 500) // Back button appears last
+    ];
+
+    return () => timers.forEach(timer => clearTimeout(timer));
   }, []);
 
   return (
@@ -20,27 +33,36 @@ export default function AboutUsPage() {
 
       <div className="bg-black text-white min-h-screen">
         <div className="container mx-auto px-4 py-12">
+          {/* Back Button */}
+          <div className={`absolute left-6 top-6 transition-opacity duration-500 ${isBackButtonVisible ? "opacity-100" : "opacity-0"}`}>
+            <BackButton />
+          </div>
+
           {/* Hero Section */}
           <div className="flex flex-col items-center justify-center mb-16">
-            <div className="relative w-32 h-32 mb-8 transform transition-all duration-1000 hover:scale-110">
+            <div className={`relative w-32 h-32 mb-8 transform transition-all duration-1000 hover:scale-110 ${
+              isLogoVisible ? "opacity-100" : "opacity-0"
+            }`}>
               <Image
                 src="/GSIM_only_logo.png"
                 alt="GSIM Logo"
                 fill
-                className={`object-contain transition-opacity duration-1000 ${
-                  isVisible ? "opacity-100" : "opacity-0"
-                }`}
+                className="object-contain"
               />
             </div>
-            <h1 className="text-5xl md:text-7xl font-thin text-center mb-6 
+            <h1 className={`text-5xl md:text-7xl font-thin text-center mb-6 
               bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent
-              transform transition-all duration-1000 hover:scale-105">
+              transform transition-all duration-1000 hover:scale-105 ${
+                isTitleVisible ? "opacity-100" : "opacity-0"
+              }`}>
               ABOUT GSIM
             </h1>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex justify-center gap-4 mb-12">
+          <div className={`flex justify-center gap-4 mb-12 transition-opacity duration-500 ${
+            isTabsVisible ? "opacity-100" : "opacity-0"
+          }`}>
             {['about', 'vision'].map((section) => (
               <button
                 key={section}
@@ -56,10 +78,12 @@ export default function AboutUsPage() {
           </div>
 
           {/* Content Sections */}
-          <div className="max-w-4xl mx-auto">
+          <div className={`max-w-4xl mx-auto transition-opacity duration-500 ${
+            isContentVisible ? "opacity-100" : "opacity-0"
+          }`}>
             {activeSection === 'about' && (
               <div className="space-y-8 animate-slideUp">
-                <p className="text-xl text-gray-300 leading-relaxed transform transition-all duration-500 hover:translate-x-2">
+                <p className="text-xl text-gray-300 text-center leading-relaxed transform transition-all duration-500 hover:translate-x-2">
                   Welcome to Good Shepherd Music Institute (GSIM), one of Chennai's most respected music institutions! For over 5 years, GSIM has been dedicated to spreading the joy of music, nurturing talent, and cultivating excellence in students of all ages.
                 </p>
 
@@ -86,10 +110,10 @@ export default function AboutUsPage() {
               <div className="space-y-8 animate-slideUp">
                 <div className="bg-gradient-to-br from-white/10 to-transparent p-8 rounded-xl mb-12
                   transform transition-all duration-500 hover:translate-y-[-4px]">
-                  <h3 className="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                  <h3 className="text-2xl text-center font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
                     Our Vision
                   </h3>
-                  <p className="text-xl text-gray-300">
+                  <p className="text-xl text-gray-300 text-center">
                     To inspire individuals to think musically and make a difference in the world.
                   </p>
                 </div>

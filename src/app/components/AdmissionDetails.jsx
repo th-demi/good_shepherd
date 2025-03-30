@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Loader2 } from 'lucide-react';
 
 const AdmissionsDetails = () => {
@@ -38,8 +38,14 @@ const AdmissionsDetails = () => {
   };
 
   const formatDate = React.useCallback((dateString) => {
-    const date = new Date(dateString);
-    return format(date, 'MMM dd, yyyy');
+    if (!dateString) return 'N/A';
+    try {
+      const date = typeof dateString === 'string' ? parseISO(dateString) : new Date(dateString);
+      return format(date, 'MMM dd, yyyy');
+    } catch (e) {
+      console.error('Invalid date format:', dateString);
+      return 'Invalid date';
+    }
   }, []);
 
   if (error) {
@@ -57,9 +63,7 @@ const AdmissionsDetails = () => {
       {/* Left Column - Names List */}
       <div className="w-full lg:w-96 border-b lg:border-b-0 lg:border-r border-gray-200 bg-white/80 backdrop-blur-sm">
         <div className="sticky top-0 bg-white/90 backdrop-blur-md z-10 p-4 border-b border-gray-200">
-          <h2 className="text-xl font-bold">
-            Admissions
-          </h2>
+          <h2 className="text-xl font-bold">Admissions</h2>
         </div>        
         <div className="divide-y divide-gray-100 max-h-[calc(100vh-16rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
           {loading ? (
@@ -69,12 +73,12 @@ const AdmissionsDetails = () => {
           ) : admissionsData.length === 0 ? (
             <div className="text-center py-8 text-gray-500">No admissions found</div>
           ) : (
-            admissionsData.map((student, index) => (
+            admissionsData.map((student) => (
               <div
-                key={student._id}
+                key={student.Timestamp || student.Name} // Use Timestamp as unique key if available
                 className="transform transition-all duration-300"
                 style={{ 
-                  animationDelay: `${index * 50}ms`,
+                  animationDelay: `${admissionsData.indexOf(student) * 50}ms`,
                   opacity: 0,
                   animation: 'fadeSlideIn 0.5s ease forwards'
                 }}
@@ -82,14 +86,12 @@ const AdmissionsDetails = () => {
                 <button
                   onClick={() => handleStudentSelect(student)}
                   className={`w-full text-left px-6 py-4 transition-all duration-300 
-                    ${selectedStudent?._id === student._id 
+                    ${selectedStudent?.Timestamp === student.Timestamp 
                       ? 'bg-gray-100 border-l-4 border-blue-500 shadow-inner' 
                       : 'hover:bg-gray-50'}`}
                 >
-                  <p className={`text-sm font-semibold transition-colors duration-300`}>
-                    {student.Name}
-                  </p>
-                  <p className={`text-xs mt-1 transition-colors duration-300`}>
+                  <p className="text-sm font-semibold">{student.Name}</p>
+                  <p className="text-xs mt-1 text-gray-500">
                     {student['Type of Musical Instrument']}
                   </p>
                 </button>
@@ -109,7 +111,7 @@ const AdmissionsDetails = () => {
             <div className="mb-8 space-y-2">
               <h1 className="text-3xl font-bold text-gray-900">{selectedStudent.Name}</h1>
               <p className="text-sm text-gray-500">
-                Admitted on {formatDate(selectedStudent.createdAt)}
+                Admitted on {formatDate(selectedStudent.Timestamp)}
               </p>
             </div>
 
@@ -117,15 +119,15 @@ const AdmissionsDetails = () => {
               {[
                 { label: "Activity Status", value: selectedStudent['Activity Status'] },
                 { label: "Gender", value: selectedStudent.Gender },
-                { label: "School/College/Occupation", value: selectedStudent['School / College / Occupation'] },
+                { label: "School / College / Occupation", value: selectedStudent['School / College / Occupation'] },
                 { label: "Musical Instrument", value: selectedStudent['Type of Musical Instrument'] },
-                { label: "Email", value: selectedStudent['E - mail'], type: "email" },
+                { label: "Email", value: selectedStudent['E-mail'], type: "email" },
                 { label: "Phone", value: selectedStudent['Phone number'], type: "phone" },
                 { label: "Address", value: selectedStudent['Residence Address'] },
                 { label: "Date of Birth", value: formatDate(selectedStudent['Date of Birth']) }
               ].map((detail, index) => (
                 <div
-                  key={detail.label}
+                  key={`${detail.label}-${index}`}
                   className="transform transition-all duration-500"
                   style={{ 
                     animationDelay: `${showDetails ? (index * 100) + 200 : 0}ms`,
@@ -174,6 +176,7 @@ const AdmissionsDetails = () => {
 
 const DetailCard = ({ label, value, type }) => {
   const renderValue = () => {
+    if (!value || value.trim() === '') return 'N/A';
     if (type === 'email') {
       return (
         <a href={`mailto:${value}`} className="text-blue-600 hover:text-blue-700 hover:underline">
@@ -183,7 +186,7 @@ const DetailCard = ({ label, value, type }) => {
     }
     if (type === 'phone') {
       return (
-        <a href={`tel:${value}`} className="text-blue-600 hover:text-blue-700 hover:underline">
+        <a href={`tel:${value.replace(/\D/g, '')}`} className="text-blue-600 hover:text-blue-700 hover:underline">
           {value}
         </a>
       );

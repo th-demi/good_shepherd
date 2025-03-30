@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-      domains: ['supercool-ram.transforms.svdcdn.com'], // Add the domain here
-    },
-  };
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'supercool-ram.transforms.svdcdn.com',
+      },
+    ],
+  },
+};
+
 export default nextConfig;

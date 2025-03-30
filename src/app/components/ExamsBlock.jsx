@@ -17,10 +17,19 @@ const ChevronIcon = () => (
   </svg>
 );
 
-const ExamsBlock = () => {
+// New glowing "New" badge component
+const NewBadge = () => (
+  <div className="relative inline-flex items-center ml-2">
+    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/50 opacity-75"></span>
+    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white animate-pulse"></span>
+    <span className="ml-1 text-xs font-bold text-white uppercase">New</span>
+  </div>
+);
 
+const ExamsBlock = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
+  
   const handleOpenSlider = (e) => {
     e.preventDefault();
     setIsSliderOpen(true);
@@ -34,6 +43,7 @@ const ExamsBlock = () => {
     // Restore body scrolling
     document.body.style.overflow = 'unset';
   };
+
   return (
     <section className="bg-custom-red py-12">
       <div className="container mx-auto px-4">
@@ -97,6 +107,7 @@ const ExamsBlock = () => {
                       <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
                     </div>
                     <ChevronIcon />
+                    <NewBadge />
                   </Link>
                 </li>
                 <li>
@@ -155,6 +166,7 @@ const ExamsBlock = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
               </div>
               <ChevronIcon />
+              <NewBadge />
             </Link>
           </li>
           <li>
